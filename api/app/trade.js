@@ -1,6 +1,7 @@
 'use strict'
 const co = require('co');
-var Trade = require('../../services/trade');
+const Trade = require('../../services/trade');
+
 
 exports.makeOrder = function(req, res, next) {
     req.checkBody('id', '验证出错').notEmpty();

@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
+var expressValidator = require('express-validator');
 
 var API_Router = require('./api/api-router');
 // var loginRouter = require('./routes/login');
@@ -24,6 +25,23 @@ client.on('error', function (err) { console.log('redis错误 - ' + client.host +
 
 app.set('port', process.env.PORT || 2333);
 
+app.use(expressValidator({
+  errorFormatter: function(param, message, value) {
+    return {
+        param: param,
+        message: message,
+        value: value
+    }
+  },
+  customValidators: {
+    isInt: function(value) {
+      return typeof value === 'number'
+    },
+    notEmpty: function(value) {
+      return typeof value !== 'undefined'
+    }
+  }
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
